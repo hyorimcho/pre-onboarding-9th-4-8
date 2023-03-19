@@ -6,3 +6,9 @@ export interface IData {
   status: boolean;
   transaction_time: string;
 }
+
+export interface IPageProps {
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  pageNums?: number;
+}

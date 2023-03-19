@@ -2,51 +2,63 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
-  Td,
-  TableCaption,
   TableContainer,
+  Checkbox,
 } from '@chakra-ui/react';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { Container } from '@chakra-ui/react';
 import getOrderData from '@/api/getOrderData';
+import PageBtn from '@/components/PageBtn';
+import { LIMIT } from '@/constants/page';
+import TableRow from '@/components/TableRow';
+import { transactionOption } from '@/constants/transactionOption';
 
 const Main = () => {
   const queryClient = useQueryClient();
-  const { data, isLoading, isFetching } = useQuery({
-    queryKey: ['data'],
+  const [todayOrderList, setTodayOrderList] = useState(false);
+  const { data: orderData } = useQuery({
+    queryKey: ['orderData'],
     queryFn: getOrderData,
     refetchOnWindowFocus: false,
   });
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * LIMIT;
+  let pageNums;
+
+  const filteredData = orderData?.filter((item) =>
+    item.transaction_time.includes('2023-03-08'),
+  );
+  const transaction = todayOrderList ? filteredData : orderData;
+
+  if (transaction?.length) {
+    pageNums = Math.ceil(transaction.length / LIMIT);
+  }
 
   return (
-    <TableContainer border="1px solid black">
-      <Table size="sm">
-        <TableCaption>Imperial to metric conversion factors</TableCaption>
+    <TableContainer m={10}>
+      <Checkbox onChange={() => setTodayOrderList(!todayOrderList)}>
+        오늘만 보기
+      </Checkbox>
+      <Table>
         <Thead>
           <Tr>
-            <Th>ID</Th>
-            <Th>transaction_time</Th>
-            <Th>status</Th>
-            <Th>customer_id</Th>
-            <Th>customer_name</Th>
-            <Th>currency</Th>
+            {transactionOption.map((option, i) => (
+              <Th key={i}>{option}</Th>
+            ))}
           </Tr>
         </Thead>
         <Tbody>
-          {data?.map((item) => (
-            <Tr key={item.id}>
-              <Td>{item.id}</Td>
-              <Td>{item.transaction_time}</Td>
-              <Td>{item.status}</Td>
-              <Td>{item.customer_id}</Td>
-              <Td>{item.customer_name}</Td>
-              <Td>{item.currency}</Td>
-            </Tr>
+          {transaction?.slice(offset, offset + LIMIT)?.map((item) => (
+            <TableRow key={item.id} item={item} />
           ))}
         </Tbody>
       </Table>
+      <Container mt={10}>
+        <PageBtn page={page} setPage={setPage} pageNums={pageNums} />
+      </Container>
     </TableContainer>
   );
 };

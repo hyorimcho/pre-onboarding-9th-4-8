@@ -1,13 +1,12 @@
-import { RouterProvider } from 'react-router';
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router';
 import Main from './pages/Main';
 
 const Router = () => {
-  const router = createBrowserRouter([{ path: '/', element: <Main /> }]);
   return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
+    <Routes>
+      <Route path="/" element={<Main />} />
+      <Route path="/*" element={<Navigate to="/" replace={true} />} />
+    </Routes>
   );
 };
 
