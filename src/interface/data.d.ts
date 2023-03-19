@@ -9,6 +9,6 @@ export interface IData {
 
 export interface IPageProps {
   page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
   pageNums?: number;
+  setSearchParams: SetURLSearchParams;
 }
