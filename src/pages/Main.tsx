@@ -17,12 +17,12 @@ import TableRow from '@/components/TableRow';
 import { transactionOption } from '@/constants/transactionOption';
 
 const Main = () => {
-  const queryClient = useQueryClient();
   const [todayOrderList, setTodayOrderList] = useState(false);
   const { data: orderData } = useQuery({
     queryKey: ['orderData'],
     queryFn: getOrderData,
     refetchOnWindowFocus: false,
+    refetchInterval: 5000,
   });
   const [page, setPage] = useState(1);
   const offset = (page - 1) * LIMIT;
