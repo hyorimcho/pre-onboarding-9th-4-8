@@ -1,8 +1,8 @@
 export const transactionOption = [
-  'id',
-  'transaction_time',
-  'status',
-  'customer_id',
-  'customer_name',
-  'currency',
+  '아이디',
+  '주문 일자',
+  '주문 상태',
+  '고객 아이디',
+  '고객 이름',
+  '금액',
 ];

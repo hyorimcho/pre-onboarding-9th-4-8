@@ -1,17 +1,17 @@
-import { Button } from '@chakra-ui/react';
+import { Button, Stack } from '@chakra-ui/react';
 import { IPageProps } from '@/interface/data';
 
 const PageBtn = ({ page, pageNums, setSearchParams }: IPageProps) => {
-  const handlePage = (page: any) => {
+  const handlePage = (page: number) => {
     setSearchParams({ page });
   };
-
   return (
-    <>
+    <Stack spacing={2} direction="row" align="center">
       <Button
-        onClick={() => handlePage(page - 1)}
+        onClick={() => handlePage(page * 1 - 1)}
         isDisabled={page == 1}
         colorScheme="blue"
+        variant="outline"
       >
         ‹
       </Button>
@@ -22,18 +22,20 @@ const PageBtn = ({ page, pageNums, setSearchParams }: IPageProps) => {
             key={i + 1}
             onClick={() => handlePage(i + 1)}
             colorScheme="blue"
+            variant={page === i + 1 ? 'solid' : 'outline'}
           >
             {i + 1}
           </Button>
         ))}
       <Button
-        onClick={() => handlePage(page + 1)}
-        isDisabled={page === pageNums}
+        onClick={() => handlePage(page * 1 + 1)}
+        isDisabled={page == pageNums}
         colorScheme="blue"
+        variant="outline"
       >
         ›
       </Button>
-    </>
+    </Stack>
   );
 };
 export default PageBtn;
