@@ -14,16 +14,31 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { CheckIcon, WarningIcon } from '@chakra-ui/icons';
+import { useSearchParams } from 'react-router-dom';
 import { IOrderItem } from '@/interface/main';
 import useSetParams from '@/lib/hooks/useSetParams';
 import { formatPageInfo } from '@/lib/utils/formattingHelper';
 import useGetOrderData from '@/lib/hooks/useGetOrderData';
+
 import TablePagination from './TablePagination';
 import TableController from './TableController';
 
 const OrderTableArea = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { currentPage, currentDate } = useSetParams();
-  const { data } = useGetOrderData(currentPage, currentDate);
+  const { data } = useGetOrderData(
+    currentPage,
+    currentDate,
+    searchParams.get('sorting'),
+  );
+
+  const handleSort = (type: string) => {
+    if (searchParams.get('sorting') === `${type}-descending`) {
+      setSearchParams({ sorting: `${type}-ascending` });
+    } else {
+      setSearchParams({ sorting: `${type}-descending` });
+    }
+  };
 
   return (
     <Box bg="white" w="100%" borderRadius="2xl" p="1em 2em">
@@ -45,10 +60,14 @@ const OrderTableArea = () => {
           </TableCaption>
           <Thead>
             <Tr>
-              <Th>Order ID</Th>
-              <Th>Status</Th>
+              <Th>
+                <button onClick={() => handleSort('id')}>Order ID</button>
+              </Th>
+              <Th onClick={() => setStatus(!status)}>Status</Th>
               <Th>Customer Name / ID</Th>
-              <Th>Time</Th>
+              <Th>
+                <button onClick={() => handleSort('time')}>Time</button>
+              </Th>
               <Th>Currency</Th>
             </Tr>
           </Thead>

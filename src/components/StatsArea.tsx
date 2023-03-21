@@ -12,6 +12,7 @@ import {
 import { CheckIcon, WarningIcon } from '@chakra-ui/icons';
 import { IoIosPeople } from 'react-icons/io';
 import { TfiMoney } from 'react-icons/tfi';
+import { useSearchParams } from 'react-router-dom';
 import { formatNumToDollar } from '@/lib/utils/formattingHelper';
 import { IOrderItem } from '@/interface/main';
 import useGetOrderData from '@/lib/hooks/useGetOrderData';
@@ -19,7 +20,12 @@ import useSetParams from '@/lib/hooks/useSetParams';
 
 const StatsArea = () => {
   const { currentPage, currentDate } = useSetParams();
-  const { data } = useGetOrderData(currentPage, currentDate);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { data } = useGetOrderData(
+    currentPage,
+    currentDate,
+    searchParams.get('sorting'),
+  );
 
   const stats = [
     {
