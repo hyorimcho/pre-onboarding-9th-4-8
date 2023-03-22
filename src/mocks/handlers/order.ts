@@ -10,6 +10,7 @@ export const orderListHandlers = [
     const limit = Number(req.url.searchParams.get('limit'));
     const date = req.url.searchParams.get('date');
     const sorting = req.url.searchParams.get('sorting');
+    const status = req.url.searchParams.get('status');
 
     const dataOfSelectedDate = date
       ? mockData.filter((item) => item.transaction_time.split(' ')[0] === date)

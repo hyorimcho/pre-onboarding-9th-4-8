@@ -25,12 +25,8 @@ import TableController from './TableController';
 
 const OrderTableArea = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { currentPage, currentDate } = useSetParams();
-  const { data } = useGetOrderData(
-    currentPage,
-    currentDate,
-    searchParams.get('sorting'),
-  );
+  const { currentPage, currentDate, sorting, setStatus } = useSetParams();
+  const { data } = useGetOrderData(currentPage, currentDate, sorting);
 
   const handleSort = (type: string) => {
     if (searchParams.get('sorting') === `${type}-descending`) {
@@ -60,13 +56,15 @@ const OrderTableArea = () => {
           </TableCaption>
           <Thead>
             <Tr>
-              <Th>
-                <button onClick={() => handleSort('id')}>Order ID</button>
+              <Th onClick={() => handleSort('id')} cursor="pointer">
+                Order ID
               </Th>
-              <Th onClick={() => setStatus(!status)}>Status</Th>
+              <Th onClick={() => setStatus('complete')} cursor="pointer">
+                Status
+              </Th>
               <Th>Customer Name / ID</Th>
-              <Th>
-                <button onClick={() => handleSort('time')}>Time</button>
+              <Th onClick={() => handleSort('time')} cursor="pointer">
+                Time
               </Th>
               <Th>Currency</Th>
             </Tr>

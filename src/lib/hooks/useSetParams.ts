@@ -22,12 +22,19 @@ const useSetParams = () => {
     setSearchParams(searchParams);
   };
 
+  const setStatus = (value: string) => {
+    if (status === value) searchParams.set('status', 'incomplete');
+    else searchParams.set('status', 'complete');
+    setSearchParams(searchParams);
+  };
+
   return {
     currentPage,
     currentDate,
     onSetParams,
     sorting,
     setSorting,
+    status,
     setStatus,
   };
 };
